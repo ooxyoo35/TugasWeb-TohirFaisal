@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzz Website - Contact Space Station HD++</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- ULTRA SMOOTH TRANSITION LINE --- */
+        #transition-line {
+            position: fixed; top: 0; left: 0; height: 5px; width: 0%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5, #00d2ff);
+            background-size: 200% 100%; z-index: 9999;
+            transition: width 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); pointer-events: none;
+        }
+
+        /* --- UI COMPONENTS & ANIMASI SPACE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; }
+
+        body {
+            /* Background Ruang Angkasa dengan Nebula yang lebih dalam */
+            background: 
+                linear-gradient(-45deg, rgba(10, 10, 31, 0.9), rgba(25, 20, 70, 0.8), rgba(5, 5, 20, 0.9)),
+                url('https://cdn.pixabay.com/photo/2016/11/21/15/44/stars-1846051_1280.jpg');
+            background-size: 400% 400%, cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: gradientBG 15s ease infinite, ultraReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes ultraReveal {
+            from { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+            to { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+
+        /* --- DEKORASI PLANET BERPUTAR --- */
+        .planet-decor {
+            position: fixed;
+            bottom: -50px;
+            right: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle at 30% 30%, #5dade2, #21618c);
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: 1;
+            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(93, 173, 226, 0.3);
+            animation: floatPlanet 20s ease-in-out infinite;
+        }
+
+        @keyframes floatPlanet {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+
+        /* --- SISTEM PESAWAT (SHIP) --- */
+        .ship {
+            position: fixed;
+            left: -150px; 
+            font-size: 2.2rem;
+            z-index: 10;
+            pointer-events: none;
+            filter: drop-shadow(0 0 15px #00d2ff) drop-shadow(0 0 5px #ffffff);
+            top: var(--top);
+            animation: flyAcross var(--speed) linear infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes flyAcross {
+            0% { 
+                transform: translateX(0) translateY(0) rotate(var(--rotation)); 
+                opacity: 0; 
+            }
+            10% { opacity: 1; }
+            50% { transform: translateX(55vw) translateY(-40px) rotate(5deg); }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateX(125vw) translateY(30px) rotate(calc(var(--rotation) * -1)); 
+                opacity: 0; 
+            }
+        }
+
+        /* --- SISTEM BINTANG MELUNCUR --- */
+        .star {
+            position: fixed; background: white; border-radius: 50%; opacity: 0.5; pointer-events: none; z-index: 0; filter: drop-shadow(0 0 2px white);
+        }
+        @keyframes starMove { from { transform: translate(0, 0); opacity: 1; } to { transform: translate(var(--x), var(--y)); opacity: 0; } }
+
+        .fade-out { opacity: 0 !important; filter: blur(5px); transform: scale(1.02); transition: 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
+
+        nav {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 15px; text-align: center;
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid rgba(0, 210, 255, 0.4);
+        }
+
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; transition: 0.4s; opacity: 0.7; display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; letter-spacing: 1px; }
+        nav a:hover { opacity: 1; color: #00d2ff; transform: translateY(-3px); text-shadow: 0 0 10px #00d2ff; }
+
+        /* --- CONTAINER OUTER SPACE THEME --- */
+        .container-outer {
+            max-width: 550px; margin: auto; position: relative; z-index: 50;
+            padding: 2px; 
+            background: linear-gradient(90deg, #00ffff, #3a7bd5, #00ffff);
+            background-size: 400% 400%; border-radius: 26px;
+            animation: rgbFlow 5s linear infinite; 
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.4);
+            margin-top: 50px; margin-bottom: 50px;
+        }
+
+        @keyframes rgbFlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+        .container { 
+            background: rgba(5, 5, 20, 0.9); 
+            backdrop-filter: blur(25px); 
+            padding: 40px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        h1 { 
+            font-family: 'Orbitron', sans-serif;
+            text-align: center; 
+            margin-bottom: 10px; 
+            color: #ffffff; 
+            letter-spacing: 3px; 
+            text-shadow: 0 0 20px rgba(0,210,255,0.8); 
+        }
+        .subtitle {
+            text-align: center;
+            color: #00d2ff;
+            margin-bottom: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        input, textarea { width: 100%; padding: 18px; margin-top: 8px; margin-bottom: 25px; border-radius: 14px; border: 1px solid rgba(0, 210, 255, 0.3); background: rgba(255, 255, 255, 0.05); color: white; transition: 0.3s ease; }
+        input:focus, textarea:focus { background: rgba(0, 210, 255, 0.1); border-color: #00d2ff; outline: none; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
+        
+        .btn-submit { 
+            width: 100%; padding: 18px; border: none; border-radius: 14px; 
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5); 
+            color: #fff; font-weight: 600; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: 0.4s ease; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-submit:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0,210,255,0.5); }
+
+        footer { text-align: center; padding: 30px; background: rgba(0,0,0,0.9); color: #00d2ff; font-size: 0.8rem; margin-top: auto; position: relative; z-index: 50; border-top: 1px solid rgba(0, 210, 255, 0.2); font-family: 'Orbitron', sans-serif; }
+    </style>
+</head>
+
+<body>
+
+    <div id="transition-line"></div>
+    <div id="star-area"></div>
+    <div class="planet-decor"></div> 
+
+    <div class="ship" style="--top: 10%; --speed: 7s; --delay: 0s; --rotation: 15deg;">🚀</div>
+    <div class="ship" style="--top: 25%; --speed: 15s; --delay: 3s; --rotation: -5deg;">🛰️</div>
+    <div class="ship" style="--top: 45%; --speed: 10s; --delay: 1s; --rotation: 20deg;">🛸</div>
+    <div class="ship" style="--top: 60%; --speed: 20s; --delay: 5s; --rotation: -10deg;">👨‍🚀</div>
+    <div class="ship" style="--top: 80%; --speed: 12s; --delay: 2s; --rotation: -15deg;">🚀</div>
+    <div class="ship" style="--top: 35%; --speed: 9s; --delay: 8s; --rotation: 10deg;">✈️</div>
+
+    <nav>
+        <a href="index.html" class="nav-link">Home Base</a>
+        <a href="cv-dian.pdf">Data Log (CV)</a>
+        <a href="contact.html" class="nav-link">Comms Station</a>
+        <a href="about.html" class="nav-link">The Crew</a>
+    </nav>
+
+    <div class="container-outer">
+        <div class="container">
+            <h1>📩 COMMS PANEL</h1>
+            <p class="subtitle">Secure Transmission to Izzz Station</p>
+            <form action="#">
+                <input type="email" placeholder="Signal Origin (Email)..." required />
+                <textarea placeholder="Your encrypted message..." rows="5" required></textarea>
+                <button type="submit" class="btn-submit">Send Signal 📡</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Izzz Website | Galactic Sub-sector Alpha-7 | v3.1 HD++</p>
+    </footer>
+
+    <script>
+        // SCRIPT TETAP SAMA SEPERTI ASLINYA
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href.includes('.pdf') || this.href === '#') return;
+                e.preventDefault();
+                const target = this.href;
+                const line = document.getElementById('transition-line');
+                line.style.width = '100%';
+                document.body.classList.add('fade-out');
+                setTimeout(() => { window.location.href = target; }, 700); 
+            });
+        });
+
+        function createStar() {
+            const starArea = document.getElementById('star-area');
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2.5 + 1 + 'px';
+            star.style.width = size; star.style.height = size;
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            star.style.top = Math.random() * window.innerHeight + 'px';
+            star.style.setProperty('--x', (Math.random() - 0.5) * 600 + 'px');
+            star.style.setProperty('--y', (Math.random() - 0.5) * 600 + 'px');
+            star.style.animation = `starMove ${Math.random() * 3 + 2.5}s linear forwards`;
+            starArea.appendChild(star);
+            setTimeout(() => { star.remove(); }, 5000);
+        }
+        setInterval(createStar, 120);
+    </script>
+
+</body>
+</html>

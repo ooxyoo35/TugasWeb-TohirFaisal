@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elaina Galactic Fleet - Command Center</title>
+
+    <style>
+        @keyframes nebulaBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            /* Perubahan: Warna background lebih kontras untuk kedalaman ruang angkasa */
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050510 70%, #000000 100%);
+            background-size: 200% 200%;
+            animation: nebulaBG 20s ease infinite;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Navigasi */
+        nav {
+            background: rgba(0, 5, 15, 0.9);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.2);
+        }
+
+        nav a {
+            color: #00ffff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        
+        nav a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        /* Bintang */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            box-shadow: 0 0 5px #fff;
+            animation: moveStar linear infinite;
+        }
+
+        @keyframes moveStar {
+            from { transform: translate(0, 0); }
+            to { transform: translate(var(--x), var(--y)); }
+        }
+
+        /* --- ARMADA PESAWAT LUAR ANGKASA (DIPERBANYAK) --- */
+        .spaceship {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.8));
+        }
+
+        /* 1. ROKET */
+        @keyframes rocketFly {
+            0% { transform: translateY(110vh) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(-45deg); opacity: 0; }
+        }
+        .rocket { bottom: -50px; left: 10%; animation: rocketFly 10s linear infinite; font-size: 45px; }
+
+        /* 2. UFO */
+        @keyframes ufoFly {
+            0% { left: -10%; top: 20%; }
+            50% { left: 50%; top: 35%; transform: rotate(20deg); }
+            100% { left: 110%; top: 20%; }
+        }
+        .ufo { animation: ufoFly 15s ease-in-out infinite; font-size: 40px; }
+
+        /* 3. STARFIGHTER (Cepat & Tajam) */
+        @keyframes fighterFly {
+            0% { right: -10%; bottom: 20%; transform: rotate(-30deg); }
+            100% { right: 110%; top: 10%; transform: rotate(-30deg); }
+        }
+        .fighter { animation: fighterFly 5s linear infinite; font-size: 30px; }
+
+        /* 4. SATELIT */
+        @keyframes satelliteOrbit {
+            0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+        }
+        .satellite { top: 15%; right: 15%; animation: satelliteOrbit 25s linear infinite; font-size: 35px; }
+
+        /* 5. ASTRONOT */
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+        .astronaut { bottom: 25%; right: 5%; animation: floating 7s ease-in-out infinite; font-size: 35px; }
+
+        /* 6. PESAWAT PENGINTAI (TAMBAHAN) */
+        @keyframes scoutFly {
+            0% { left: 110%; bottom: 10%; }
+            100% { left: -10%; bottom: 40%; transform: scaleX(-1); }
+        }
+        .scout { animation: scoutFly 12s linear infinite; font-size: 28px; opacity: 0.6; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header img {
+            border-radius: 50%;
+            border: 5px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            transition: 0.5s;
+        }
+
+        header img:hover { transform: scale(1.15) rotate(5deg); filter: brightness(1.2); }
+
+        h1 { font-size: 3rem; text-shadow: 0 0 15px #00ffff; letter-spacing: 3px; margin-top: 20px; }
+
+        article {
+            text-align: center;
+            background: rgba(10, 10, 30, 0.85);
+            margin: 20px auto;
+            padding: 40px;
+            max-width: 750px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .table-container {
+            max-width: 750px;
+            margin: 30px auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        table {
+            width: 100%;
+            background: rgba(0, 5, 15, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        th { background: rgba(0, 255, 255, 0.2); padding: 20px; color: #00ffff; text-transform: uppercase; font-size: 1.1rem; }
+        td { padding: 20px; border-bottom: 1px solid rgba(0, 255, 255, 0.1); }
+        
+        ul { list-style: none; padding: 0; }
+        ul li { margin: 8px 0; }
+        ul li::before { content: "► "; color: #00ffff; font-size: 0.8rem; }
+
+        footer {
+            text-align: center;
+            padding: 35px;
+            background: #000005;
+            margin-top: 50px;
+            border-top: 3px solid rgba(0, 255, 255, 0.5);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="star-container"></div>
+
+    <div class="spaceship rocket">🚀</div>
+    <div class="spaceship ufo">🛸</div>
+    <div class="spaceship fighter">✈️</div>
+    <div class="spaceship satellite">🛰️</div>
+    <div class="spaceship astronaut">👨‍🚀</div>
+    <div class="spaceship scout">🛸</div>
+
+    <nav>
+        <a href="index.html">Home Base</a>
+        <a href="cv-dian.pdf">Data Log (CV)</a>
+        <a href="contact.html">Comms Station</a>
+        <a href="about.html">Crew Info</a>
+    </nav>
+
+    <header>
+        <img src="image/image.jpg" width="180" height="180" alt="Commander Elaina"/>
+        <h1>COMMANDER ELAINA</h1>
+        <p>✦ Chief Galactic Systems Architect ✦</p>
+    </header>
+
+    <article>
+        <h2>MISSION BRIEFING</h2>
+        <p>
+            Menerima transmisi dari Sektor Jakarta... Sistem Antarmuka siap diinisialisasi. 
+            Saya sedang memimpin misi pengembangan arsitektur web lintas dimensi untuk masa depan galaksi digital. 🌌
+        </p>
+    </article>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>⚡ Core Systems (Skills)</th>
+                    <th>🛡️ Mission Log (Experience)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Hyper-HTML5 Structure</li>
+                            <li>Cosmic CSS3 Design</li>
+                            <li>Warp-Speed JavaScript</li>
+                            <li>Node.js Reactor</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>Freelance Star-Runner</li>
+                            <li>Linux Squad Commander</li>
+                            <li>Open Source Colonist</li>
+                            <li>Lead Fleet Architect</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>© 2026 Cosmic Portal | Transmitting via Alpha Centauri Hub ❤️</p>
+    </footer>
+
+    <script>
+        function createStars() {
+            const container = document.getElementById('star-container');
+            const starCount = 120; // Jumlah bintang ditambah
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1 + 'px';
+                star.style.width = size;
+                star.style.height = size;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.setProperty('--x', (Math.random() - 0.5) * 600 + 'px');
+                star.style.setProperty('--y', (Math.random() - 0.5) * 600 + 'px');
+                star.style.animationDuration = (Math.random() * 8 + 4) + 's';
+                // Variasi kedipan bintang
+                star.style.opacity = Math.random();
+                container.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+
+</body>
+</html>
